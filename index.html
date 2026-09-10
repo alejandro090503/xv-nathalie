@@ -48,11 +48,7 @@ body{
   display:flex;align-items:center;justify-content:center;padding:32px;opacity:0;
 }
 .lang-in{text-align:center;max-width:320px;width:100%}
-.lang-orn{width:170px;height:38px;display:block;margin:0 auto 22px}
-.lang-mono{
-  font-family:'Great Vibes',cursive;font-size:70px;line-height:1;color:#fff;
-  text-shadow:0 2px 26px rgba(212,175,55,.5);margin-bottom:22px;
-}
+.lang-orn{width:170px;height:38px;display:block;margin:0 auto 30px}
 .lang-q{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:19px;
   letter-spacing:2px;color:#fff;line-height:1.6;margin-bottom:26px;
@@ -284,8 +280,8 @@ section{padding:60px 26px;}
 .wheel-ring{position:absolute;width:100%;height:100%;transform-style:preserve-3d;cursor:grab;}
 .wheel-ring.dragging{cursor:grabbing}
 .wheel-card{
-  position:absolute;width:150px;height:215px;left:50%;top:50%;
-  margin-left:-75px;margin-top:-107px;border-radius:14px;overflow:hidden;
+  position:absolute;width:130px;height:186px;left:50%;top:50%;
+  margin-left:-65px;margin-top:-93px;border-radius:12px;overflow:hidden;
   border:1px solid rgba(212,175,55,.45);
   box-shadow:0 12px 40px rgba(20,26,107,.35);
   user-select:none;-webkit-user-select:none;cursor:pointer;
@@ -475,6 +471,254 @@ footer .fc a{color:inherit;text-decoration:none;}
   .ti-time{font-size:25px;}
   .ti-ev{font-size:14px;letter-spacing:1px;}
 }
+
+/* ── BRILLO DE ORO (goldSweep, de bautizo-jayden) ─────────────────────────
+   El degradado se recorta sobre el texto y se barre de lado a lado. La caja
+   se ensancha con padding (y se cancela con margen negativo) porque los
+   rasgos de Great Vibes sobresalen y quedarian cortados. */
+.invite-eyebrow,.eyebrow,.invite-verse-ref,.cd-lbl,.loc-card .ls,.dc-warn,
+.dc-fig-hint,.fam-g .role,.pad-rol,.env-title,.env-tap-hint,.gal-hint,.album-hashtag,
+.inv-label,.rsvp-title em,.rsvp-deadline span,footer .fd{
+  background-image:linear-gradient(100deg,
+    #6B4F1C 0%,#7A5C22 10%,#8A6A28 20%,#A8822F 27%,#C9A04E 32%,#A8822F 37%,
+    #9A7830 46%,#6B4F1C 58%,#8A6A28 70%,#B98F3C 80%,#7A5C22 90%,#6B4F1C 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:goldSweep 5s linear infinite;
+  filter:drop-shadow(0 0 4px rgba(201,160,78,.35));
+  padding-left:.34em;padding-right:.34em;
+  margin-left:-.34em;margin-right:-.34em;
+}
+/* Sobre fondo oscuro conviene el brillo casi blanco: contrasta en vez de diluirse. */
+.hero-name,.hero-xv,.hero-anos,.envelope-hint{
+  background-image:linear-gradient(100deg,
+    #9A7830 0%,#C9A04E 10%,#E8D5A3 20%,#F5E6B8 27%,#FFFBEA 32%,#F5E6B8 37%,
+    #E8D5A3 46%,#C9A04E 58%,#E8D5A3 70%,#F5E6B8 80%,#C9A04E 90%,#9A7830 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  text-shadow:none;
+  animation:goldSweep 5.5s linear infinite;
+  padding-left:.34em;padding-right:.34em;
+  margin-left:-.34em;margin-right:-.34em;
+}
+.hero-name{filter:drop-shadow(0 3px 18px rgba(0,0,0,.6)) drop-shadow(0 0 22px rgba(232,201,110,.35));}
+.hero-xv,.hero-anos{filter:drop-shadow(0 0 14px rgba(232,201,110,.4));}
+.envelope-hint{filter:drop-shadow(0 0 8px rgba(232,201,110,.5));}
+/* el album ya traia su propio resplandor */
+.album-hashtag{filter:drop-shadow(0 0 10px rgba(201,160,78,.4));}
+@keyframes goldSweep{
+  0%  {background-position:200% center}
+  100%{background-position:-200% center}
+}
+@media(prefers-reduced-motion:reduce){
+  .invite-eyebrow,.eyebrow,.invite-verse-ref,.cd-lbl,.loc-card .ls,.dc-warn,
+  .dc-fig-hint,.fam-g .role,.pad-rol,.env-title,.env-tap-hint,.gal-hint,.album-hashtag,
+  .inv-label,.rsvp-title em,.rsvp-deadline span,footer .fd,
+  .hero-name,.hero-xv,.hero-anos,.envelope-hint{animation:none;}
+}
+
+/* ── PADRINOS: carrusel de uno en uno ────────────────────────────────────
+   Ocho padrinos en lista hacen la seccion larguisima; aqui pasan uno por
+   uno con fundido y cada uno lleva el icono de su encargo. */
+.fam-full{width:100%;}
+.pad-carousel{position:relative;width:100%;max-width:340px;margin:0 auto;height:210px;}
+.pad-slide{
+  position:absolute;inset:0;opacity:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  padding:0 8px;
+}
+.pad-icon{width:54px;height:54px;color:#8A6A28;filter:drop-shadow(0 0 8px rgba(201,160,78,.35));}
+.pad-icon svg{width:100%;height:100%;display:block;}
+.pad-nombres{font-size:21px;font-weight:600;color:var(--dark);line-height:1.45;}
+.pad-rol{font-style:italic;font-weight:600;font-size:16px;letter-spacing:2.5px;text-transform:uppercase;}
+.pad-dots{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.pad-dot{
+  width:8px;height:8px;border-radius:50%;padding:0;border:1px solid rgba(212,175,55,.55);
+  background:var(--surface);cursor:pointer;transition:background .3s,transform .3s;
+}
+.pad-dot.active{background:var(--gold);transform:scale(1.3);}
+
+/* ── CORTE DE HONOR: un reflector nombra a cada uno ──────────────────────
+   La lista entera se queda a la vista y el nombre en turno crece y se
+   enciende en oro; asi cada dama y chambelan tiene su momento. */
+.corte{display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 0;}
+.corte-name{
+  font-size:18px;font-weight:600;color:var(--dark);line-height:2;
+  opacity:.32;transform:scale(1);
+  transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.3,1),letter-spacing .75s ease;
+  will-change:transform,opacity;
+}
+.corte-name.is-on{
+  opacity:1;transform:scale(1.32);letter-spacing:1.5px;
+  background-image:linear-gradient(100deg,
+    #6B4F1C 0%,#7A5C22 10%,#8A6A28 20%,#A8822F 27%,#C9A04E 32%,#A8822F 37%,
+    #9A7830 46%,#6B4F1C 58%,#8A6A28 70%,#B98F3C 80%,#7A5C22 90%,#6B4F1C 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:goldSweep 4s linear infinite;
+  filter:drop-shadow(0 0 6px rgba(201,160,78,.45));
+  padding:0 .28em;
+}
+
+/* ── LLUVIA DE SOBRES (de boda-jeffersson-y-vanessa) ─────────────────────*/
+#sgifts{position:relative;overflow:hidden;text-align:center;}
+.env-rain{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.env-rain-item{position:absolute;top:-46px;will-change:transform;opacity:0;}
+#sgifts .env-stage{position:relative;z-index:1;}
+.env-interactive{
+  display:flex;flex-direction:column;align-items:center;cursor:pointer;
+  outline:none;border:none;background:none;padding:0;margin:26px auto 0;opacity:0;
+}
+.env-body{
+  perspective:700px;position:relative;width:min(258px,74vw);aspect-ratio:260/200;
+  filter:drop-shadow(0 10px 26px rgba(20,26,107,.22));
+}
+.env-body svg.env-svg{width:100%;height:100%;display:block;}
+.env-flap-wrap{
+  position:absolute;top:23%;left:6.9%;width:86.2%;height:43%;
+  transform-origin:top center;transform-style:preserve-3d;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  transition:transform .65s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:2;
+}
+.env-interactive.open .env-flap-wrap{transform:rotateX(-175deg);}
+.env-seal{
+  position:absolute;top:52%;left:50%;width:23%;aspect-ratio:1;
+  transform:translate(-50%,-50%);z-index:3;pointer-events:none;
+  transition:opacity .35s ease,transform .5s cubic-bezier(.4,0,.2,1);
+}
+.env-interactive.open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(.7);}
+.env-open-content{
+  overflow:hidden;max-height:0;opacity:0;
+  transition:max-height .55s .3s ease,opacity .4s .38s ease;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:0 16px;text-align:center;pointer-events:none;
+}
+.env-interactive.open .env-open-content{max-height:320px;opacity:1;pointer-events:auto;margin-top:20px;}
+.env-mailbox-icon{width:44px;height:44px;color:#8A6A28;margin-top:6px;}
+.env-title{font-family:'Great Vibes',cursive;font-size:clamp(30px,8vw,38px);line-height:1.4;padding:.08em 0;}
+.env-desc{font-style:italic;font-weight:600;font-size:17px;color:var(--text);line-height:1.7;max-width:300px;}
+.env-tap-hint{
+  font-weight:700;font-size:14px;letter-spacing:.3em;text-transform:uppercase;
+  margin-top:18px;opacity:0;transition:opacity .5s ease;position:relative;z-index:1;
+}
+.env-tap-hint.show{opacity:.9;animation:envHintPulse 2.4s ease-in-out infinite;}
+.env-interactive.open~.env-tap-hint{opacity:0!important;animation:none;pointer-events:none;}
+@keyframes envHintPulse{0%,100%{opacity:.55}50%{opacity:1}}
+.env-body.landed{animation:envBreathe 3.6s ease-in-out infinite;}
+@keyframes envBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@media(prefers-reduced-motion:reduce){
+  .env-body.landed,.env-tap-hint.show{animation:none!important;}
+  .corte-name{transition:none;}
+}
+
+/* ── BOTONES AZULES METALICOS ────────────────────────────────────────────
+   Un azul plano se ve de plastico. Aqui van tres capas: el degradado del
+   cuerpo (claro arriba, oscuro abajo, con el quiebre del bisel al 50%), un
+   ::before que pone el brillo alto del metal, y un ::after que barre una
+   luz suave cada pocos segundos. Los bordes de luz (inset arriba, sombra
+   abajo) son los que dan el relieve. */
+.btn,.rsvp-btn{
+  position:relative;overflow:hidden;isolation:isolate;
+  background-image:linear-gradient(180deg,
+    #5960F5 0%, #3B42E4 26%, #2D33D7 49%,
+    #242AB6 51%, #1C2299 78%, #171C7E 100%);
+  border:1px solid rgba(212,175,55,.45);
+  color:#FFFFFF;
+  text-shadow:0 1px 2px rgba(10,14,60,.55);
+  box-shadow:
+    0 10px 26px rgba(20,26,107,.32),
+    0 2px 6px rgba(20,26,107,.22),
+    inset 0 1px 0 rgba(255,255,255,.42),
+    inset 0 -1px 0 rgba(8,10,50,.45),
+    inset 0 0 0 1px rgba(255,255,255,.07);
+  transition:transform .3s ease,box-shadow .3s ease,filter .3s ease;
+}
+/* brillo alto del metal: se concentra en la mitad de arriba */
+.btn::before,.rsvp-btn::before{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.34) 0%,
+    rgba(255,255,255,.10) 32%,
+    rgba(255,255,255,0)   52%,
+    rgba(255,255,255,.05) 100%);
+}
+/* barrido de luz: solo cruza durante el primer tercio del ciclo, el resto
+   del tiempo esta fuera de cuadro para que el efecto sea sutil y no un flash */
+.btn::after,.rsvp-btn::after{
+  content:'';position:absolute;top:-60%;bottom:-60%;width:38%;left:-45%;
+  z-index:-1;pointer-events:none;transform:skewX(-18deg);
+  background:linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,.16) 38%,
+    rgba(255,255,255,.42) 50%,
+    rgba(255,255,255,.16) 62%,
+    rgba(255,255,255,0) 100%);
+  animation:btnShine 5.2s ease-in-out infinite;
+}
+.rsvp-btn::after{animation-duration:6s;animation-delay:1.1s;}
+@keyframes btnShine{
+  0%  {left:-45%;}
+  34% {left:118%;}
+  100%{left:118%;}
+}
+.btn:hover,.rsvp-btn:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.07);
+  box-shadow:
+    0 16px 34px rgba(20,26,107,.38),
+    0 3px 8px rgba(20,26,107,.26),
+    inset 0 1px 0 rgba(255,255,255,.5),
+    inset 0 -1px 0 rgba(8,10,50,.45),
+    inset 0 0 0 1px rgba(212,175,55,.16);
+}
+.btn:active,.rsvp-btn:active{
+  transform:translateY(0);
+  box-shadow:
+    0 4px 12px rgba(20,26,107,.28),
+    inset 0 2px 5px rgba(8,10,50,.5),
+    inset 0 -1px 0 rgba(255,255,255,.14);
+}
+.rsvp-btn:disabled{opacity:.55;filter:saturate(.7);}
+.rsvp-btn:disabled::after{animation:none;left:-45%;}
+@media(prefers-reduced-motion:reduce){
+  .btn::after,.rsvp-btn::after{animation:none;left:-45%;}
+}
+
+/* ── IDIOMA: el oro barre el BORDE de los botones ────────────────────────
+   Dos capas de fondo: el relleno oscuro recortado a padding-box y el
+   degradado dorado a border-box; solo se mueve la segunda, asi el barrido
+   viaja por el filo sin tocar el interior. */
+.lang-btn{
+  border:1.5px solid transparent;
+  background:
+    linear-gradient(#0A1040,#0A1040) padding-box,
+    linear-gradient(100deg,
+      #9A7830 0%,#C9A04E 10%,#E8D5A3 20%,#F5E6B8 27%,#FFFBEA 32%,#F5E6B8 37%,
+      #E8D5A3 46%,#C9A04E 58%,#E8D5A3 70%,#F5E6B8 80%,#C9A04E 90%,#9A7830 100%) border-box;
+  background-size:100% 100%,300% 100%;
+  background-repeat:no-repeat,repeat;
+  animation:goldSweepBorde 5s linear infinite;
+  box-shadow:0 0 14px rgba(232,201,110,.16);
+}
+.lang-btn:active{
+  transform:scale(.97);
+  background:
+    linear-gradient(rgba(212,175,55,.22),rgba(212,175,55,.22)) padding-box,
+    linear-gradient(100deg,
+      #9A7830 0%,#C9A04E 10%,#E8D5A3 20%,#F5E6B8 27%,#FFFBEA 32%,#F5E6B8 37%,
+      #E8D5A3 46%,#C9A04E 58%,#E8D5A3 70%,#F5E6B8 80%,#C9A04E 90%,#9A7830 100%) border-box;
+  background-size:100% 100%,300% 100%;
+  background-repeat:no-repeat,repeat;
+}
+@keyframes goldSweepBorde{
+  0%  {background-position:0 0,200% center;}
+  100%{background-position:0 0,-200% center;}
+}
+.lang-btn+.lang-btn{margin-top:14px;}
+@media(prefers-reduced-motion:reduce){.lang-btn{animation:none;}}
 </style>
 </head>
 <body>
@@ -486,7 +730,6 @@ footer .fc a{color:inherit;text-decoration:none;}
       <path d="M6 19 Q44 7 85 19 T164 19" stroke="#d4af37" stroke-width=".85" opacity=".6"/>
       <polygon points="85,4 88.1,13.8 98.5,13.8 90.2,19.6 93.3,29.4 85,23.6 76.7,29.4 79.8,19.6 71.5,13.8 81.9,13.8" fill="#d4af37" opacity=".85"/>
     </svg>
-    <div class="lang-mono">N.D.I.</div>
     <p class="lang-q">Elige tu idioma<span>Choose your language</span></p>
     <button type="button" class="lang-btn" data-lang="es">Espa&ntilde;ol</button>
     <button type="button" class="lang-btn" data-lang="en">English</button>
@@ -752,34 +995,67 @@ footer .fc a{color:inherit;text-decoration:none;}
 
       <div class="flor rv">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
 
-      <div class="fam-g rv">
+      <div class="fam-g fam-full rv">
         <div class="role" data-en="My Godparents">Mis Padrinos</div>
-        <div class="names">
-          <span class="pad-l">Junior Gonzales &amp; Diana Ibarra<span class="pad-rol" data-en="Dress">Vestido</span></span>
-          <span class="pad-l">Daniel Escobar &amp; Maria Morales<span class="pad-rol" data-en="Photo &amp; Video">Foto y Video</span></span>
-          <span class="pad-l">Daniel Ibarra &amp; Laura Palapa<span class="pad-rol" data-en="Cake">Pastel</span></span>
-          <span class="pad-l">Miguel Ibarra &amp; Maria Cruz<span class="pad-rol" data-en="Photobooth">Photobooth</span></span>
-          <span class="pad-l">Arturo &amp; Maria Roque<span class="pad-rol" data-en="Desserts">Postres</span></span>
-          <span class="pad-l">Alejandro &amp; Marisol Chavez</span>
-          <span class="pad-l">Antonia Castillo<span class="pad-rol" data-en="Flower Arrangements">Arreglos de Flores</span></span>
-          <span class="pad-l">Antonia Rodrigez<span class="pad-rol" data-en="Decoration">Decoraci&oacute;n</span></span>
+        <div class="pad-carousel" id="padCarousel">
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M212.86,210.49a1.08,1.08,0,0,0-.08-.19l-45.94-97.86,21.08-33.1.09-.14a14,14,0,0,0,0-14.4c-.07-.12-.15-.24-.23-.36L166,33.33V8a6,6,0,0,0-12,0V33.12l-5.7,7.12a26,26,0,0,1-40.6,0L102,33.12V8A6,6,0,0,0,90,8V33.33L68.22,64.44c-.08.12-.16.24-.23.36a14,14,0,0,0,0,14.4l.09.14,21.08,33.1L43.22,210.3a1.08,1.08,0,0,0-.08.19A14,14,0,0,0,56,230H200a14,14,0,0,0,12.87-19.51ZM78.26,73a2,2,0,0,1-.05-1.89L96.32,45.23l2,2.51a38,38,0,0,0,59.34,0l2-2.51,18.11,25.86a2,2,0,0,1,0,1.89l-21,33H99.29ZM201.66,217.1a1.93,1.93,0,0,1-1.67.9H56a2,2,0,0,1-1.87-2.72L99.81,118h56.38l45.67,97.28A1.92,1.92,0,0,1,201.66,217.1Z"/></svg></div>
+            <div class="pad-nombres">Junior Gonzales &amp; Diana Ibarra</div>
+            <div class="pad-rol" data-en="Dress">Vestido</div>
+          </div>
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M250.83,74.71a6,6,0,0,0-6.16.3L206,100.79V72a14,14,0,0,0-14-14H32A14,14,0,0,0,18,72V184a14,14,0,0,0,14,14H192a14,14,0,0,0,14-14V155.21L244.67,181a6,6,0,0,0,9.33-5V80A6,6,0,0,0,250.83,74.71ZM194,184a2,2,0,0,1-2,2H32a2,2,0,0,1-2-2V72a2,2,0,0,1,2-2H192a2,2,0,0,1,2,2Zm48-19.21-36-24V115.21l36-24Z"/></svg></div>
+            <div class="pad-nombres">Daniel Escobar &amp; Maria Morales</div>
+            <div class="pad-rol" data-en="Photo &amp; Video">Foto y Video</div>
+          </div>
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M230,112a22,22,0,0,0-22-22H134V77.4A30.05,30.05,0,0,0,158,48c0-26.9-25.58-44.27-26.67-45a6,6,0,0,0-6.66,0C123.58,3.73,98,21.1,98,48a30.05,30.05,0,0,0,24,29.4V90H48a22,22,0,0,0-22,22v23.33a38.81,38.81,0,0,0,8,23.57V200a22,22,0,0,0,22,22H200a22,22,0,0,0,22-22V158.9a38.81,38.81,0,0,0,8-23.57ZM110,48c0-15.4,12-27.41,18-32.44,6,5,18,17,18,32.44a18,18,0,0,1-36,0ZM38,112a10,10,0,0,1,10-10H208a10,10,0,0,1,10,10v23.33c0,14.32-11.33,26.28-25.26,26.66A26,26,0,0,1,166,136a6,6,0,0,0-12,0,26,26,0,0,1-52,0,6,6,0,0,0-12,0,26,26,0,0,1-26.74,26C49.33,161.61,38,149.65,38,135.33Zm162,98H56a10,10,0,0,1-10-10V169.31A36.8,36.8,0,0,0,62.94,174,37.82,37.82,0,0,0,90.5,163.24,38.83,38.83,0,0,0,96,156.5a38,38,0,0,0,64,0,38.83,38.83,0,0,0,5.52,6.74A37.73,37.73,0,0,0,192,174h1.07A36.8,36.8,0,0,0,210,169.31V200A10,10,0,0,1,200,210Z"/></svg></div>
+            <div class="pad-nombres">Daniel Ibarra &amp; Laura Palapa</div>
+            <div class="pad-rol" data-en="Cake">Pastel</div>
+          </div>
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M166,136a6,6,0,0,1-6,6H134v26a6,6,0,0,1-12,0V142H96a6,6,0,0,1,0-12h26V104a6,6,0,0,1,12,0v26h26A6,6,0,0,1,166,136Zm64-56V192a22,22,0,0,1-22,22H48a22,22,0,0,1-22-22V80A22,22,0,0,1,48,58H76.79L88.63,40.23A14,14,0,0,1,100.28,34h55.44a14,14,0,0,1,11.65,6.23L179.21,58H208A22,22,0,0,1,230,80Zm-12,0a10,10,0,0,0-10-10H176a6,6,0,0,1-5-2.67L157.38,46.89a2,2,0,0,0-1.66-.89H100.28a2,2,0,0,0-1.66.89L85,67.33A6,6,0,0,1,80,70H48A10,10,0,0,0,38,80V192a10,10,0,0,0,10,10H208a10,10,0,0,0,10-10Z"/></svg></div>
+            <div class="pad-nombres">Miguel Ibarra &amp; Maria Cruz</div>
+            <div class="pad-rol" data-en="Photobooth">Photobooth</div>
+          </div>
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M206,98.83V96A78,78,0,0,0,50,96v2.83A22,22,0,0,0,56,142h4.45L115.84,239a14,14,0,0,0,24.32,0L195.55,142H200a22,22,0,0,0,6-43.17ZM129.74,233a2,2,0,0,1-3.48,0l-52-91h24L140,215.06ZM136,142l22.89,40.06-12,20.91-34.84-61Zm29.8,28-16-28h32ZM200,130H56a10,10,0,0,1,0-20,6,6,0,0,0,6-6V96a66,66,0,0,1,132,0v8a6,6,0,0,0,6,6,10,10,0,0,1,0,20Z"/></svg></div>
+            <div class="pad-nombres">Arturo &amp; Maria Roque</div>
+            <div class="pad-rol" data-en="Desserts">Postres</div>
+          </div>
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M196.89,130.94,144.4,111.6,125.06,59.11a13.92,13.92,0,0,0-26.12,0L79.6,111.6,27.11,130.94a13.92,13.92,0,0,0,0,26.12L79.6,176.4l19.34,52.49a13.92,13.92,0,0,0,26.12,0L144.4,176.4l52.49-19.34a13.92,13.92,0,0,0,0-26.12Zm-4.15,14.86-55.08,20.3a6,6,0,0,0-3.56,3.56l-20.3,55.08a1.92,1.92,0,0,1-3.6,0L89.9,169.66a6,6,0,0,0-3.56-3.56L31.26,145.8a1.92,1.92,0,0,1,0-3.6l55.08-20.3a6,6,0,0,0,3.56-3.56l20.3-55.08a1.92,1.92,0,0,1,3.6,0l20.3,55.08a6,6,0,0,0,3.56,3.56l55.08,20.3a1.92,1.92,0,0,1,0,3.6ZM146,40a6,6,0,0,1,6-6h18V16a6,6,0,0,1,12,0V34h18a6,6,0,0,1,0,12H182V64a6,6,0,0,1-12,0V46H152A6,6,0,0,1,146,40ZM246,88a6,6,0,0,1-6,6H230v10a6,6,0,0,1-12,0V94H208a6,6,0,0,1,0-12h10V72a6,6,0,0,1,12,0V82h10A6,6,0,0,1,246,88Z"/></svg></div>
+            <div class="pad-nombres">Alejandro &amp; Marisol Chavez</div>
+            <div class="pad-rol" data-en="With Love">Con Cari&ntilde;o</div>
+          </div>
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M244.1,122.63a13.56,13.56,0,0,0-8.3-6.4,72.62,72.62,0,0,0-24.17-2c4.67-20.63,1.62-36.91-1.45-46.4A14.16,14.16,0,0,0,193.7,58.3a84.21,84.21,0,0,0-29.76,13.11,92.6,92.6,0,0,0-27.52-34.6,14,14,0,0,0-16.85,0,92.7,92.7,0,0,0-27.51,34.6A84.16,84.16,0,0,0,62.29,58.3a14.15,14.15,0,0,0-16.47,9.54c-3.07,9.49-6.12,25.77-1.45,46.4a72.62,72.62,0,0,0-24.17,2,13.56,13.56,0,0,0-8.3,6.4,14,14,0,0,0-1.4,10.74C13.81,145.66,24,169,54.92,187.51S113.29,206,128,206s42.12,0,73.06-18.49,41.11-41.85,44.42-54.14A14,14,0,0,0,244.1,122.63ZM168.48,82.9A73.1,73.1,0,0,1,196.22,70a2.2,2.2,0,0,1,2.54,1.5C202.7,83.72,206.57,109,188.17,141a129.75,129.75,0,0,1-28,33.37C167.85,161,174,142.93,174,119.17A116.13,116.13,0,0,0,168.48,82.9ZM57.24,71.53A2.2,2.2,0,0,1,59.78,70,73.1,73.1,0,0,1,87.52,82.9,116.13,116.13,0,0,0,82,119.17c0,23.76,6.15,41.85,13.81,55.17a129.58,129.58,0,0,1-28-33.37C49.43,109,53.3,83.72,57.24,71.53ZM61.08,177.2c-27.3-16.31-36.15-36.42-39-47a2.08,2.08,0,0,1,.21-1.61,1.71,1.71,0,0,1,1-.8A62.16,62.16,0,0,1,48,126.72,126.25,126.25,0,0,0,57.43,147a141,141,0,0,0,41,44.72A114.83,114.83,0,0,1,61.08,177.2ZM128,192.86c-8.68-6.2-34-28.2-34-73.69,0-43.36,22.94-65.34,32.8-72.78a2,2,0,0,1,2.4,0c9.86,7.44,32.8,29.42,32.8,72.78C162,164.94,136.81,186.67,128,192.86Zm105.9-62.62c-2.85,10.54-11.7,30.65-39,47a114.83,114.83,0,0,1-37.38,14.47,141,141,0,0,0,41-44.72A126.25,126.25,0,0,0,208,126.72a62.16,62.16,0,0,1,24.73,1.11,1.71,1.71,0,0,1,1,.8A2.08,2.08,0,0,1,233.92,130.24Z"/></svg></div>
+            <div class="pad-nombres">Antonia Castillo</div>
+            <div class="pad-rol" data-en="Flower Arrangements">Arreglos de Flores</div>
+          </div>
+          <div class="pad-slide">
+            <div class="pad-icon"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M110.08,54a13.8,13.8,0,0,0-22.73,5.05L34.85,203.47A13.82,13.82,0,0,0,47.76,222a14,14,0,0,0,4.77-.85l144.38-52.5a13.8,13.8,0,0,0,5-22.73ZM48.43,209.87a1.79,1.79,0,0,1-2.3-2.3L61.31,165.8,90.2,194.68Zm54.21-19.71-36.8-36.81L80.51,113,143,175.49ZM194,156.07a1.74,1.74,0,0,1-1.14,1.3L155.44,171,85,100.55,98.63,63.19a1.72,1.72,0,0,1,1.3-1.14,1.58,1.58,0,0,1,.41,0,1.72,1.72,0,0,1,1.25.53l91.88,91.88A1.73,1.73,0,0,1,194,156.07ZM162,72a35.52,35.52,0,0,1,3.63-14.68C170.57,47.44,179.93,42,192,42c7.47,0,12.53-2.74,15.48-8.38A24.18,24.18,0,0,0,210,24,6,6,0,0,1,216,18h0a6,6,0,0,1,6,6c0,10.38-6.27,30-30,30-7.47,0-12.53,2.74-15.48,8.38A24,24,0,0,0,174,72a6,6,0,0,1-6,6h0A6,6,0,0,1,162,72ZM138,40V16a6,6,0,0,1,12,0V40a6,6,0,0,1-12,0Zm98.24,83.76a6,6,0,1,1-8.48,8.48l-16-16a6,6,0,0,1,8.48-8.48Zm5.66-46.07-24,8a6,6,0,1,1-3.8-11.38l24-8a6,6,0,0,1,3.8,11.38Z"/></svg></div>
+            <div class="pad-nombres">Antonia Rodrigez</div>
+            <div class="pad-rol" data-en="Decoration">Decoraci&oacute;n</div>
+          </div>
         </div>
+        <div class="pad-dots" id="padDots"></div>
       </div>
 
       <div class="flor rv">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
 
-      <div class="fam-g rv">
+      <div class="fam-g fam-full rv">
         <div class="role" data-en="Court of Honor">Damas y Chambelanes</div>
-        <div class="corte-list">
-          Damiana De Jesus<br>
-          Faith Ray<br>
-          Sofia Manzo<br>
-          Daisy Magana<br>
-          Isaac Ibarra<br>
-          Dylan Ibarra<br>
-          Cris Becerra<br>
-          Kayden Tok<br>
-          Joshua Rangel
+        <div class="corte" id="corte">
+          <span class="corte-name">Damiana De Jesus</span>
+          <span class="corte-name">Faith Ray</span>
+          <span class="corte-name">Sofia Manzo</span>
+          <span class="corte-name">Daisy Magana</span>
+          <span class="corte-name">Isaac Ibarra</span>
+          <span class="corte-name">Dylan Ibarra</span>
+          <span class="corte-name">Cris Becerra</span>
+          <span class="corte-name">Kayden Tok</span>
+          <span class="corte-name">Joshua Rangel</span>
         </div>
       </div>
     </div>
@@ -807,7 +1083,11 @@ footer .fc a{color:inherit;text-decoration:none;}
         <div class="wheel-card"><img src="./g3.jpg" alt="Nathalie"></div>
         <div class="wheel-card"><img src="./g4.jpg" alt="Nathalie"></div>
         <div class="wheel-card"><img src="./g5.jpg" alt="Nathalie"></div>
-        <div class="wheel-card"><img src="./g6.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g1.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g2.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g3.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g4.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g5.jpg" alt="Nathalie"></div>
       </div>
     </div>
     <p class="gal-hint rv" data-en="Drag to rotate">Arrastra para girar</p>
@@ -858,20 +1138,54 @@ footer .fc a{color:inherit;text-decoration:none;}
     </svg>
   </div>
 
-  <!-- MESA DE REGALOS -->
+  <!-- LLUVIA DE SOBRES (de boda-jeffersson-y-vanessa) -->
   <section class="rv" id="sgifts">
-    <div class="eyebrow" data-en="With Love">Con Cari&ntilde;o</div>
-    <h2 class="sec-title" data-en="Gift Registry">Mesa de Regalos</h2>
-    <div class="gift-grid">
-      <div class="gift-card rv">
-        <div class="gift-logo-wrap envelope">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M3 7l9 6 9-6" fill="none" stroke="#fff" stroke-width="1.5"/></svg>
+    <div class="env-rain" id="envRain" aria-hidden="true"></div>
+    <div class="env-stage">
+      <div class="eyebrow" data-en="Celebrate With Us">Celebra con Nosotros</div>
+      <h2 class="sec-title" data-en="Shower of Envelopes">Lluvia de Sobres</h2>
+
+      <button class="env-interactive" id="envGift" type="button" aria-label="Sobre — toca para abrir" aria-expanded="false">
+        <div class="env-body" id="envGiftBody">
+          <svg class="env-svg" viewBox="0 0 260 200" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="envPaper" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#EEF3FE"/>
+              </linearGradient>
+            </defs>
+            <rect x="18" y="52" width="224" height="132" rx="8" fill="url(#envPaper)" stroke="rgba(45,51,215,.45)" stroke-width="1.4"/>
+            <path d="M18 184 L130 110 L242 184" stroke="rgba(45,51,215,.28)" stroke-width="1" fill="none"/>
+          </svg>
+          <div class="env-flap-wrap" aria-hidden="true">
+            <svg viewBox="0 0 224 86" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+              <defs>
+                <linearGradient id="envFlap" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#EEF3FE"/><stop offset="100%" stop-color="#FFFFFF"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 0 L112 86 L224 0 Z" fill="url(#envFlap)" stroke="rgba(45,51,215,.45)" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <svg class="env-seal" viewBox="0 0 60 60" aria-hidden="true">
+            <circle cx="30" cy="30" r="28" fill="#2d33d7"/>
+            <circle cx="30" cy="30" r="28" fill="none" stroke="#141A6B" stroke-width="2" opacity=".55"/>
+            <circle cx="30" cy="30" r="21.5" fill="none" stroke="#E8C96E" stroke-width="1.1" opacity=".9"/>
+            <text x="30" y="38" text-anchor="middle" font-family="'Great Vibes', cursive" font-size="21" fill="#E8C96E">N.D.I.</text>
+          </svg>
         </div>
-        <div class="gift-body">
-          <div class="gb-name" data-en="Shower of Envelopes">Lluvia de Sobres</div>
-          <div class="gb-desc" data-en="On the day of the celebration there will be a special place for your envelope.">El d&iacute;a de la celebraci&oacute;n habr&aacute; un espacio especial para tu sobre.</div>
+        <div class="env-open-content" aria-live="polite">
+          <svg class="env-mailbox-icon" viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="8" y="22" width="36" height="24" rx="5"/>
+            <path d="M8 30 Q26 38 44 30"/>
+            <rect x="18" y="8" width="16" height="16" rx="2"/>
+            <path d="M18 8 Q26 3 34 8"/>
+            <rect x="20" y="28" width="12" height="2.5" rx="1.25" fill="currentColor" stroke="none" opacity=".4"/>
+          </svg>
+          <p class="env-title" data-en="Your Presence is My Gift">Tu Presencia es Mi Regalo</p>
+          <p class="env-desc" data-en="On the day of the celebration there will be an urn where you can leave your envelope with all our love.">El d&iacute;a de la celebraci&oacute;n habr&aacute; una urna donde podr&aacute;s depositar tu sobre con mucho cari&ntilde;o.</p>
         </div>
-      </div>
+      </button>
+      <p class="env-tap-hint" id="envGiftHint" data-en="Tap to open">Toca para abrir</p>
     </div>
   </section>
 
@@ -1178,6 +1492,9 @@ function launchPage(){
   initItinerary();
   initDressCode();
   initWheel();
+  initPadrinos();
+  initCorte();
+  initLluviaSobres();
 }
 
 /* ══════════════════════════════════════
@@ -1288,6 +1605,172 @@ function initDressCode(){
 }
 
 /* ══════════════════════════════════════
+   PADRINOS — uno por uno con fundido
+══════════════════════════════════════ */
+function initPadrinos(){
+  var car=document.getElementById('padCarousel');
+  var dotsWrap=document.getElementById('padDots');
+  if(!car) return;
+  var slides=car.querySelectorAll('.pad-slide');
+  var n=slides.length;
+  if(!n) return;
+  var i=0, timer=null, corriendo=false;
+
+  for(var k=0;k<n;k++){
+    var d=document.createElement('button');
+    d.type='button';
+    d.className='pad-dot'+(k===0?' active':'');
+    d.setAttribute('data-i',String(k));
+    d.setAttribute('aria-label','Padrino '+(k+1));
+    dotsWrap.appendChild(d);
+  }
+  var dots=dotsWrap.querySelectorAll('.pad-dot');
+
+  gsap.set(slides,{autoAlpha:0,y:14});
+  gsap.set(slides[0],{autoAlpha:1,y:0});
+
+  function ir(j,inmediato){
+    if(j===i) return;
+    var sale=slides[i], entra=slides[j];
+    i=j;
+    dots.forEach(function(d,k){ d.classList.toggle('active',k===j); });
+    if(inmediato){
+      gsap.set(sale,{autoAlpha:0,y:14});
+      gsap.set(entra,{autoAlpha:1,y:0});
+      return;
+    }
+    gsap.to(sale, {autoAlpha:0,y:-14,duration:.55,ease:'power2.in'});
+    gsap.fromTo(entra,{autoAlpha:0,y:14},{autoAlpha:1,y:0,duration:.7,delay:.35,ease:'power2.out'});
+  }
+
+  function siguiente(){ ir((i+1)%n); }
+  function arrancar(){ if(corriendo) return; corriendo=true; timer=setInterval(siguiente,3600); }
+  function parar(){ corriendo=false; clearInterval(timer); timer=null; }
+
+  dotsWrap.addEventListener('click',function(e){
+    var t=e.target.closest('.pad-dot');
+    if(!t) return;
+    parar(); ir(parseInt(t.getAttribute('data-i'),10)); arrancar();
+  });
+
+  ScrollTrigger.create({
+    trigger:car, start:'top 85%', end:'bottom 15%',
+    onEnter:arrancar, onEnterBack:arrancar, onLeave:parar, onLeaveBack:parar
+  });
+}
+
+/* ══════════════════════════════════════
+   CORTE DE HONOR — reflector nombre a nombre
+══════════════════════════════════════ */
+function initCorte(){
+  var wrap=document.getElementById('corte');
+  if(!wrap) return;
+  var nombres=wrap.querySelectorAll('.corte-name');
+  var n=nombres.length;
+  if(!n) return;
+  var i=-1, timer=null;
+
+  function paso(){
+    if(i>=0) nombres[i].classList.remove('is-on');
+    i=(i+1)%n;
+    nombres[i].classList.add('is-on');
+  }
+  function arrancar(){ if(timer) return; paso(); timer=setInterval(paso,2200); }
+  function parar(){
+    clearInterval(timer); timer=null;
+    if(i>=0){ nombres[i].classList.remove('is-on'); i=-1; }
+  }
+
+  ScrollTrigger.create({
+    trigger:wrap, start:'top 85%', end:'bottom 15%',
+    onEnter:arrancar, onEnterBack:arrancar, onLeave:parar, onLeaveBack:parar
+  });
+}
+
+/* ══════════════════════════════════════
+   LLUVIA DE SOBRES — caen hasta que la
+   sección se centra y ahí aterriza uno
+══════════════════════════════════════ */
+function initLluviaSobres(){
+  var sec=document.getElementById('sgifts'),
+      rain=document.getElementById('envRain'),
+      btn=document.getElementById('envGift'),
+      body=document.getElementById('envGiftBody'),
+      hint=document.getElementById('envGiftHint');
+  if(!sec||!rain||!btn) return;
+  var raining=true, landed=false, spawnCall=null, alive=0;
+  var MAX_ALIVE=18;
+
+  function makeEnvelope(){
+    if(alive>=MAX_ALIVE) return;
+    alive++;
+    var el=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    el.setAttribute('viewBox','0 0 34 24');
+    el.setAttribute('class','env-rain-item');
+    var w=16+Math.random()*16;
+    el.style.width=w+'px'; el.style.height=(w*24/34)+'px';
+    el.style.left=(Math.random()*100)+'%';
+    el.innerHTML='<rect x="1" y="1" width="32" height="22" rx="2.5" fill="#FFFFFF" stroke="#2d33d7" stroke-width="1.2"/>'+
+                 '<path d="M1 1 L17 13 L33 1" fill="none" stroke="#2d33d7" stroke-width="1.2" stroke-linejoin="round"/>';
+    rain.appendChild(el);
+    var H=sec.offsetHeight+80, dur=5+Math.random()*4;
+    function kill(){ if(el.parentNode){ el.remove(); alive--; } }
+    gsap.timeline({onComplete:kill})
+      .fromTo(el,{y:-46,x:0,rotation:(Math.random()-.5)*50,opacity:0},
+                 {y:H,x:(Math.random()-.5)*70,rotation:(Math.random()-.5)*160,
+                  duration:dur,ease:'none'},0)
+      .fromTo(el,{opacity:0},{opacity:.85,duration:dur*.18,ease:'power1.out'},0)
+      .to(el,{opacity:0,duration:dur*.25,ease:'power1.in'},dur*.75);
+  }
+
+  /* El spawn va por el ticker de GSAP (no setInterval): se pausa junto con la
+     animación si la pestaña pasa a segundo plano y no se acumulan sobres. */
+  function scheduleSpawn(){
+    spawnCall=gsap.delayedCall(.52,function(){
+      if(!raining) return;
+      makeEnvelope();
+      scheduleSpawn();
+    });
+  }
+  function startRain(){
+    for(var i=0;i<7;i++) gsap.delayedCall(i*.26,makeEnvelope);
+    scheduleSpawn();
+  }
+  function stopRain(){
+    raining=false;
+    if(spawnCall) spawnCall.kill();
+    gsap.to(rain,{opacity:0,duration:1.1,ease:'power2.out',
+      onComplete:function(){ rain.innerHTML=''; alive=0; }});
+  }
+
+  function land(){
+    if(landed) return; landed=true;
+    stopRain();
+    gsap.fromTo(btn,
+      {opacity:0,y:-150,rotation:-12,scale:.82},
+      {opacity:1,y:0,rotation:0,scale:1,duration:1.15,ease:'back.out(1.5)',
+       onComplete:function(){
+         if(body) body.classList.add('landed');
+         if(hint) hint.classList.add('show');
+       }});
+  }
+
+  startRain();
+  /* 55% y no 'center': el reveal genérico corre 28px las secciones que aún no
+     se ven, y con 'center center' exacto el umbral nunca se alcanza. */
+  ScrollTrigger.create({trigger:sec,start:'center 55%',once:true,onEnter:land,onEnterBack:land});
+
+  btn.addEventListener('click',function(e){
+    e.preventDefault();
+    if(!landed) return;
+    var open=btn.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    if(open&&body) body.classList.remove('landed');
+    ScrollTrigger.refresh();
+  });
+}
+
+/* ══════════════════════════════════════
    GALERÍA — RUEDA 3D con arrastre (xv-giselle)
 ══════════════════════════════════════ */
 function initWheel(){
@@ -1296,8 +1779,10 @@ function initWheel(){
   var cards=ring.querySelectorAll('.wheel-card');
   var n=cards.length;
   if(!n)return;
-  var ancho=cards[0].offsetWidth||150;
-  var radius=Math.max(210,Math.ceil((ancho+6)/(2*Math.sin(Math.PI/n))));
+  /* radio minimo justo: la cuerda 2*r*sen(180/n) iguala el ancho de la tarjeta,
+     asi quedan pegadas sin traslaparse por mucho que se repitan las fotos. */
+  var ancho=cards[0].offsetWidth||130;
+  var radius=Math.ceil((ancho+2)/(2*Math.sin(Math.PI/n)));
   var rot=0,vel=0,isDrag=false,startX=0,startRot=0,lastX=0,rafId=null,moved=0;
 
   cards.forEach(function(card,i){
