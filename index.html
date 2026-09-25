@@ -280,8 +280,8 @@ section{padding:60px 26px;}
 .wheel-ring{position:absolute;width:100%;height:100%;transform-style:preserve-3d;cursor:grab;}
 .wheel-ring.dragging{cursor:grabbing}
 .wheel-card{
-  position:absolute;width:130px;height:186px;left:50%;top:50%;
-  margin-left:-65px;margin-top:-93px;border-radius:12px;overflow:hidden;
+  position:absolute;width:150px;height:215px;left:50%;top:50%;
+  margin-left:-75px;margin-top:-107px;border-radius:14px;overflow:hidden;
   border:1px solid rgba(212,175,55,.45);
   box-shadow:0 12px 40px rgba(20,26,107,.35);
   user-select:none;-webkit-user-select:none;cursor:pointer;
@@ -1110,11 +1110,6 @@ footer .fc a{color:inherit;text-decoration:none;}
         <div class="wheel-card"><img src="./g3.jpg" alt="Nathalie"></div>
         <div class="wheel-card"><img src="./g4.jpg" alt="Nathalie"></div>
         <div class="wheel-card"><img src="./g5.jpg" alt="Nathalie"></div>
-        <div class="wheel-card"><img src="./g1.jpg" alt="Nathalie"></div>
-        <div class="wheel-card"><img src="./g2.jpg" alt="Nathalie"></div>
-        <div class="wheel-card"><img src="./g3.jpg" alt="Nathalie"></div>
-        <div class="wheel-card"><img src="./g4.jpg" alt="Nathalie"></div>
-        <div class="wheel-card"><img src="./g5.jpg" alt="Nathalie"></div>
       </div>
     </div>
     <p class="gal-hint rv" data-en="Drag to rotate">Arrastra para girar</p>
@@ -1713,8 +1708,8 @@ function initWheel(){
   if(!n)return;
   /* radio minimo justo: la cuerda 2*r*sen(180/n) iguala el ancho de la tarjeta,
      asi quedan pegadas sin traslaparse por mucho que se repitan las fotos. */
-  var ancho=cards[0].offsetWidth||130;
-  var radius=Math.ceil((ancho+2)/(2*Math.sin(Math.PI/n)));
+  var ancho=cards[0].offsetWidth||150;
+  var radius=Math.max(150,Math.ceil((ancho+2)/(2*Math.sin(Math.PI/n))));
   var rot=0,vel=0,isDrag=false,startX=0,startRot=0,lastX=0,rafId=null,moved=0;
 
   cards.forEach(function(card,i){
