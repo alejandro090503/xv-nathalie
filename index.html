@@ -280,8 +280,8 @@ section{padding:60px 26px;}
 .wheel-ring{position:absolute;width:100%;height:100%;transform-style:preserve-3d;cursor:grab;}
 .wheel-ring.dragging{cursor:grabbing}
 .wheel-card{
-  position:absolute;width:150px;height:215px;left:50%;top:50%;
-  margin-left:-75px;margin-top:-107px;border-radius:14px;overflow:hidden;
+  position:absolute;width:128px;height:184px;left:50%;top:50%;
+  margin-left:-64px;margin-top:-92px;border-radius:12px;overflow:hidden;
   border:1px solid rgba(212,175,55,.45);
   box-shadow:0 12px 40px rgba(20,26,107,.35);
   user-select:none;-webkit-user-select:none;cursor:pointer;
@@ -756,6 +756,23 @@ footer .fc a{color:inherit;text-decoration:none;}
   margin-bottom:8px;
 }
 .rsvp-nota p{font-size:16px;font-weight:500;color:var(--text);line-height:1.65;margin:0;}
+
+/* ── DRESS CODE: el unico color a evitar ─────────────────────────────────*/
+.dc-avoid{
+  position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:12px;
+  max-width:340px;margin:26px auto 0;padding:14px 18px;
+  border:1px solid rgba(212,175,55,.45);border-radius:40px;background:rgba(255,255,255,.7);
+  font-size:16px;font-weight:600;line-height:1.45;color:var(--text);text-align:left;
+}
+.dc-avoid strong{color:#2d33d7;font-weight:700;}
+.dc-avoid-dot{
+  position:relative;flex-shrink:0;width:26px;height:26px;border-radius:50%;
+  background:#2d33d7;box-shadow:0 0 0 2px #fff,0 0 0 3px rgba(212,175,55,.6);
+}
+.dc-avoid-dot::after{
+  content:'';position:absolute;left:50%;top:-3px;bottom:-3px;width:2.5px;margin-left:-1.25px;
+  background:#fff;transform:rotate(45deg);border-radius:2px;box-shadow:0 0 0 .5px rgba(0,0,0,.2);
+}
 </style>
 </head>
 <body>
@@ -983,20 +1000,24 @@ footer .fc a{color:inherit;text-decoration:none;}
   <section class="rv" id="sdc">
     <div class="eyebrow" data-en="Etiquette">Etiqueta</div>
     <h2 class="sec-title" data-en="Dress Code">Dress Code</h2>
-    <div class="dc-note" data-en="To be confirmed">Por Confirmar</div>
-    <div class="dc-warn" data-en="&#10022; &nbsp; We will share the details soon &nbsp; &#10022;">&#10022; &nbsp; Muy pronto compartiremos los detalles &nbsp; &#10022;</div>
+    <div class="dc-note" data-en="Come as you like">Vestimenta Libre</div>
+    <div class="dc-warn" data-en="&#10022; &nbsp; Wear whatever makes you feel your best &nbsp; &#10022;">&#10022; &nbsp; Ven como te sientas m&aacute;s c&oacute;modo &nbsp; &#10022;</div>
     <div class="dc-figures" id="dcFigs">
       <div class="dc-fig">
         <img class="dc-img" src="./caballero.png" alt="Caballero" loading="lazy">
         <div class="dc-fig-name" data-en="Gentlemen">Caballero</div>
-        <div class="dc-fig-hint" data-en="To be confirmed">Por confirmar</div>
+        <div class="dc-fig-hint" data-en="As you like">Como gustes</div>
       </div>
       <div class="dc-divider" aria-hidden="true"></div>
       <div class="dc-fig">
         <img class="dc-img" src="./dama.png" alt="Dama" loading="lazy">
         <div class="dc-fig-name" data-en="Ladies">Dama</div>
-        <div class="dc-fig-hint" data-en="To be confirmed">Por confirmar</div>
+        <div class="dc-fig-hint" data-en="As you like">Como gustes</div>
       </div>
+    </div>
+    <div class="dc-avoid">
+      <span class="dc-avoid-dot" aria-hidden="true"></span>
+      <span data-en="If you can, please avoid <strong>royal blue</strong>, reserved for the quincea&ntilde;era">Si puedes, evita el <strong>azul rey</strong>, reservado para la quincea&ntilde;era</span>
     </div>
   </section>
 
@@ -1110,6 +1131,13 @@ footer .fc a{color:inherit;text-decoration:none;}
         <div class="wheel-card"><img src="./g3.jpg" alt="Nathalie"></div>
         <div class="wheel-card"><img src="./g4.jpg" alt="Nathalie"></div>
         <div class="wheel-card"><img src="./g5.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g6.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g7.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g8.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g9.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g10.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g11.jpg" alt="Nathalie"></div>
+        <div class="wheel-card"><img src="./g12.jpg" alt="Nathalie"></div>
       </div>
     </div>
     <p class="gal-hint rv" data-en="Drag to rotate">Arrastra para girar</p>
@@ -1708,7 +1736,7 @@ function initWheel(){
   if(!n)return;
   /* radio minimo justo: la cuerda 2*r*sen(180/n) iguala el ancho de la tarjeta,
      asi quedan pegadas sin traslaparse por mucho que se repitan las fotos. */
-  var ancho=cards[0].offsetWidth||150;
+  var ancho=cards[0].offsetWidth||128;
   var radius=Math.max(150,Math.ceil((ancho+2)/(2*Math.sin(Math.PI/n))));
   var rot=0,vel=0,isDrag=false,startX=0,startRot=0,lastX=0,rafId=null,moved=0;
 
