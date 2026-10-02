@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
@@ -379,6 +380,20 @@ section{padding:60px 26px;}
 }
 .rsvp-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(45,51,215,.35);}
 .rsvp-btn:disabled{opacity:.6;cursor:not-allowed;}
+/* Codigos de acceso QR (panel Celestial) */
+#qrSection{margin-top:30px}
+.rsvp-qr-title{font-family:'Great Vibes',cursive;font-size:clamp(30px,8vw,40px);color:var(--accent);text-align:center;line-height:1.2;margin-bottom:6px}
+.rsvp-qr-hint{font-weight:600;font-size:17px;color:var(--dark);text-align:center;line-height:1.6;margin:0 auto 22px;max-width:420px}
+.rsvp-qr-grid{display:flex;flex-direction:column;gap:16px;align-items:center}
+.rsvp-qr-card{background:#fff;border:1.5px solid rgba(212,175,55,.55);border-radius:18px;padding:22px 20px;text-align:center;width:100%;max-width:300px;box-shadow:0 8px 26px rgba(20,26,107,.10)}
+.rsvp-qr-card .qr-img{background:#fff;padding:8px;display:inline-block;line-height:0}
+.rsvp-qr-card .qr-img canvas{display:block;width:180px;height:180px}
+.rsvp-qr-name{font-weight:700;font-size:clamp(19px,5vw,22px);color:var(--dark);margin-top:12px}
+.rsvp-qr-mesa{font-style:italic;font-weight:600;font-size:17px;color:var(--accent);margin-top:2px}
+.rsvp-qr-code-lbl{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text);margin-top:12px}
+.rsvp-qr-code-txt{font-family:'Courier New',monospace;font-size:15px;letter-spacing:2px;color:var(--dark);margin-top:4px;user-select:all;-webkit-user-select:all}
+.rsvp-qr-dl{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:10px 24px;min-height:44px;background:transparent;border:1.5px solid rgba(45,51,215,.45);border-radius:10px;color:var(--dark);font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;transition:background .2s}
+.rsvp-qr-dl:hover{background:rgba(158,196,245,.28)}
 #rsvp-feedback{font-style:italic;font-weight:600;font-size:17px;text-align:center;margin:16px auto 0;max-width:420px;color:var(--dark);}
 .rsvp-deadline{display:inline-flex;align-items:center;gap:8px;margin-top:26px;font-weight:700;font-size:14px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-text);padding-left:.28em;}
 
@@ -1300,6 +1315,12 @@ footer .fc a{color:inherit;text-decoration:none;}
 
           <p id="rsvp-feedback"></p>
 
+          <div id="qrSection" style="display:none">
+            <p class="rsvp-qr-title" data-en="Your access codes">Tus c&oacute;digos de acceso</p>
+            <p class="rsvp-qr-hint" data-en="Show your QR code at the entrance.&lt;br&gt;You can display it on your phone or download it.">Presenta tu c&oacute;digo QR en la entrada.<br>Puedes mostrarlo desde el celular o descargarlo.</p>
+            <div class="rsvp-qr-grid" id="qrGrid"></div>
+          </div>
+
           <div class="rsvp-deadline">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z"/></svg>
             <span data-en="Deadline &middot; October 31, 2026">Fecha l&iacute;mite &middot; 31 de octubre de 2026</span>
@@ -1359,6 +1380,12 @@ var FRASES={
     okSi:'¡Tu asistencia ha sido confirmada! Nos vemos pronto.',
     okNo:'Hemos registrado que no podrás asistir. ¡Gracias por avisarnos!',
     errorRed:'Error de conexión. Intenta de nuevo.',
+    errorGuardar:'No pudimos guardar tu respuesta. Intenta de nuevo.',
+    sinEnlace:'Para confirmar abre el enlace personalizado que te enviamos; ese enlace lleva tu nombre y tus pases.',
+    noDisponible:'Esta invitación ya no está disponible. Por favor contacta a la familia.',
+    noDisponibleBtn:'Invitación no disponible',
+    qrPendiente:'Tus códigos de acceso estarán disponibles cuando se acerque el evento. Vuelve a esta página más adelante.',
+    qrRespaldo:'Código de respaldo', qrDescargar:'Descargar', qrMesa:'Mesa ',
     unPase:'1 Pase', variosPases:' Pases'
   },
   en:{
@@ -1380,6 +1407,12 @@ var FRASES={
     okSi:'Your attendance is confirmed! See you soon.',
     okNo:'We have registered that you cannot attend. Thank you for letting us know!',
     errorRed:'Connection error. Please try again.',
+    errorGuardar:'We could not save your response. Please try again.',
+    sinEnlace:'To confirm, please open the personal link we sent you; that link carries your name and passes.',
+    noDisponible:'This invitation is no longer available. Please contact the family.',
+    noDisponibleBtn:'Invitation unavailable',
+    qrPendiente:'Your access codes will be available closer to the event. Please come back to this page later.',
+    qrRespaldo:'Backup code', qrDescargar:'Download', qrMesa:'Table ',
     unPase:'1 Pass', variosPases:' Passes'
   }
 };
@@ -1874,12 +1907,70 @@ function initWheel(){
 /* ══════════════════════════════════════
    RSVP — PANEL DE INVITADOS
 ══════════════════════════════════════ */
-var PANEL_API = 'https://panel-invitados.vercel.app/api/confirmar';
+var PANEL_API = 'https://panel-invitados-qr.vercel.app/api/confirmar';
 var RSVP_URL  = 'https://xv-nathalie.vercel.app';
-var DEADLINE  = new Date(2026, 9, 31, 23, 59, 59, 999); // 31 oct 2026
+var DEADLINE  = new Date(2026, 9, 31, 23, 59, 59, 999); // 31 oct 2026 (fallback; manda la del panel)
 
 var _pases = 1, _menores = 0, _para = '', _choice = null, _savedNames = [];
 var _yaRespondio = false;
+var _anulada = false;      // la invitacion se borro en el panel
+var _qrs = null;           // ultimos QR recibidos (null = seccion oculta, [] = pendientes)
+
+/* ── Codigos de acceso: uno por persona confirmada ── */
+function pintarQrs(){
+  var sec = _el('qrSection'), grid = _el('qrGrid');
+  if(!sec || !grid) return;
+  if(_qrs === null){ sec.style.display = 'none'; return; }
+  grid.innerHTML = '';
+  if(!_qrs.length || typeof QRCode === 'undefined'){
+    var p = document.createElement('p');
+    p.className = 'rsvp-qr-hint';
+    p.textContent = window.T.qrPendiente;
+    grid.appendChild(p);
+    sec.style.display = 'block';
+    return;
+  }
+  _qrs.forEach(function(q){
+    var card = document.createElement('div'); card.className = 'rsvp-qr-card';
+    var box  = document.createElement('div'); box.className = 'qr-img';
+    var cv   = document.createElement('canvas'); box.appendChild(cv); card.appendChild(box);
+    QRCode.toCanvas(cv, q.codigo, { width:180, margin:1, color:{ dark:'#141A6B', light:'#FFFFFF' } }, function(){});
+    var nm = document.createElement('p'); nm.className = 'rsvp-qr-name'; nm.textContent = q.nombre_persona; card.appendChild(nm);
+    if(q.mesa){ var ms = document.createElement('p'); ms.className = 'rsvp-qr-mesa'; ms.textContent = window.T.qrMesa + q.mesa; card.appendChild(ms); }
+    var lbl = document.createElement('p'); lbl.className = 'rsvp-qr-code-lbl'; lbl.textContent = window.T.qrRespaldo; card.appendChild(lbl);
+    var ct  = document.createElement('p'); ct.className = 'rsvp-qr-code-txt'; ct.textContent = q.codigo; card.appendChild(ct);
+    var dl  = document.createElement('button'); dl.type = 'button'; dl.className = 'rsvp-qr-dl'; dl.textContent = window.T.qrDescargar;
+    dl.addEventListener('click', function(){
+      QRCode.toDataURL(q.codigo, { width:1024, margin:2, color:{ dark:'#141A6B', light:'#FFFFFF' } }, function(err, url){
+        if(err) return;
+        var a = document.createElement('a'); a.href = url;
+        a.download = 'qr-' + q.nombre_persona.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '.png';
+        a.click();
+      });
+    });
+    card.appendChild(dl);
+    grid.appendChild(card);
+  });
+  sec.style.display = 'block';
+}
+
+function congelarRSVP(textoBtn, mensaje){
+  _el('rsvpBtnYes').disabled = true;
+  _el('rsvpBtnNo').disabled = true;
+  _el('rsvpSubmitBtn').disabled = true;
+  _el('rsvpNamesWrap').querySelectorAll('input').forEach(function(i){ i.disabled = true; });
+  _el('rsvpBtnText').textContent = textoBtn;
+  _el('rsvp-feedback').textContent = mensaje;
+}
+function aplicarPlazo(){
+  if(_anulada) return;
+  if(Date.now() > DEADLINE.getTime()) congelarRSVP(window.T.fueraDePlazo, window.T.plazoVencido);
+}
+function invitacionNoDisponible(){
+  _anulada = true;
+  _qrs = null; pintarQrs();
+  congelarRSVP(window.T.noDisponibleBtn, window.T.noDisponible);
+}
 
 function _el(id){ return document.getElementById(id); }
 
@@ -1896,6 +1987,10 @@ function refrescarTextosRSVP(){
   actualizarBadge();
   _el('rsvpBtnText').textContent = _yaRespondio ? window.T.actualizar : window.T.confirmar;
   if(_choice === 'yes') renderNames();
+  pintarQrs();
+  if(_anulada) congelarRSVP(window.T.noDisponibleBtn, window.T.noDisponible);
+  else if(!_para){ _el('rsvpSubmitBtn').disabled = true; _el('rsvp-feedback').textContent = window.T.sinEnlace; }
+  else aplicarPlazo();
 }
 
 function initRSVP(){
@@ -1931,6 +2026,11 @@ function initRSVP(){
       .then(function(r){ return r.json(); })
       .then(function(resp){
         var d = resp.invitado;
+        if(!d && resp.ok){ actualizarBadge(); invitacionNoDisponible(); return; }
+        if(resp.boda && resp.boda.fecha_limite_rsvp){
+          var lim = new Date(resp.boda.fecha_limite_rsvp);
+          if(!isNaN(lim.getTime())) DEADLINE = lim;
+        }
         if(d){
           if(typeof d.pases === 'number' && d.pases > 0 && d.pases <= 20) _pases = d.pases;
           if(typeof d.pases_menores === 'number' && d.pases_menores >= 0 && d.pases_menores <= 20) _menores = d.pases_menores;
@@ -1944,7 +2044,9 @@ function initRSVP(){
           selectRsvp(d.estado === 'confirmado' ? 'yes' : 'no');
           btnText.textContent = window.T.actualizar;
           feedback.textContent = d.estado === 'confirmado' ? window.T.yaConfirmado : window.T.yaDeclinado;
+          if(d.estado === 'confirmado'){ _qrs = resp.qrs || []; pintarQrs(); }
         }
+        aplicarPlazo();
       })
       .catch(function(){
         actualizarBadge();
@@ -1952,13 +2054,11 @@ function initRSVP(){
       });
   } else {
     actualizarBadge();
+    submitBtn.disabled = true;
+    feedback.textContent = window.T.sinEnlace;
   }
 
-  if(Date.now() > DEADLINE.getTime()){
-    btnYes.disabled = true; btnNo.disabled = true; submitBtn.disabled = true;
-    btnText.textContent = window.T.fueraDePlazo;
-    feedback.textContent = window.T.plazoVencido;
-  }
+  aplicarPlazo();
 }
 
 function renderNames(){
@@ -2006,7 +2106,7 @@ function selectRsvp(choice){
 }
 
 function sendRSVP(){
-  if(Date.now() > DEADLINE.getTime()) return;
+  if(_anulada || !_para || Date.now() > DEADLINE.getTime()) return;
   var submitBtn = _el('rsvpSubmitBtn');
   var btnText   = _el('rsvpBtnText');
   var feedback  = _el('rsvp-feedback');
@@ -2034,19 +2134,43 @@ function sendRSVP(){
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      nombre: _para || 'Invitado',
+      nombre: _para,
       url_boda: RSVP_URL,
       estado: _choice === 'yes' ? 'confirmado' : 'declino',
+      pases: _pases,
       pases_confirmados: _choice === 'yes' ? names.length : 0,
       nombres_confirmados: names
     })
   })
-  .then(function(r){ return r.json(); })
-  .then(function(){
+  .then(function(r){ return r.json().then(function(d){ return { status:r.status, d:d }; }); })
+  .then(function(res){
+    var d = res.d;
+    submitBtn.disabled = false;
+    if(res.status === 404 && d && (d.error === 'invitacion_no_disponible' || d.error === 'no_match')){
+      invitacionNoDisponible();
+      return;
+    }
+    if(res.status === 403 && d && d.error === 'rsvp_cerrado'){
+      DEADLINE = new Date(0);
+      aplicarPlazo();
+      return;
+    }
+    if(!d || !d.ok){
+      btnText.textContent = _yaRespondio ? window.T.actualizar : window.T.confirmar;
+      feedback.textContent = window.T.errorGuardar;
+      return;
+    }
     _yaRespondio = true;
     btnText.textContent = window.T.actualizar;
-    submitBtn.disabled = false;
     feedback.textContent = _choice === 'yes' ? window.T.okSi : window.T.okNo;
+    if(_choice === 'yes'){
+      _qrs = d.qrs || [];
+      pintarQrs();
+      setTimeout(function(){ _el('qrSection').scrollIntoView({behavior:'smooth',block:'nearest'}); }, 350);
+    } else {
+      _qrs = null;
+      pintarQrs();
+    }
   })
   .catch(function(){
     btnText.textContent = window.T.confirmar;
