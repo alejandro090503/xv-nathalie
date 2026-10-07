@@ -1909,7 +1909,11 @@ function initWheel(){
 ══════════════════════════════════════ */
 var PANEL_API = 'https://panel-invitados-qr.vercel.app/api/confirmar';
 var RSVP_URL  = 'https://xv-nathalie.vercel.app';
-var DEADLINE  = new Date(2026, 9, 31, 23, 59, 59, 999); // 31 oct 2026 (fallback; manda la del panel)
+/* La fecha límite la manda el panel (el organizador la puede ampliar). Mientras no
+   responde no se congela nada; RESPALDO solo se usa si el panel no contesta. */
+var RESPALDO  = new Date(2026, 9, 31, 23, 59, 59, 999); // 31 oct 2026
+var DEADLINE  = null;
+var _congeladoPorFecha = false;
 
 var _pases = 1, _menores = 0, _para = '', _choice = null, _savedNames = [];
 var _yaRespondio = false;
@@ -1963,8 +1967,20 @@ function congelarRSVP(textoBtn, mensaje){
   _el('rsvp-feedback').textContent = mensaje;
 }
 function aplicarPlazo(){
-  if(_anulada) return;
-  if(Date.now() > DEADLINE.getTime()) congelarRSVP(window.T.fueraDePlazo, window.T.plazoVencido);
+  if(_anulada || !DEADLINE) return;
+  if(Date.now() > DEADLINE.getTime()){
+    _congeladoPorFecha = true;
+    congelarRSVP(window.T.fueraDePlazo, window.T.plazoVencido);
+  } else if(_congeladoPorFecha){
+    /* el organizador amplio la fecha: se reabre */
+    _congeladoPorFecha = false;
+    _el('rsvpBtnYes').disabled = false;
+    _el('rsvpBtnNo').disabled = false;
+    _el('rsvpSubmitBtn').disabled = !_para;
+    _el('rsvpNamesWrap').querySelectorAll('input').forEach(function(i){ i.disabled = false; });
+    _el('rsvpBtnText').textContent = _yaRespondio ? window.T.actualizar : window.T.confirmar;
+    _el('rsvp-feedback').textContent = '';
+  }
 }
 function invitacionNoDisponible(){
   _anulada = true;
@@ -2051,6 +2067,7 @@ function initRSVP(){
       .catch(function(){
         actualizarBadge();
         btnYes.disabled = false; btnNo.disabled = false;
+        if(!DEADLINE){ DEADLINE = RESPALDO; aplicarPlazo(); }
       });
   } else {
     actualizarBadge();
@@ -2106,7 +2123,7 @@ function selectRsvp(choice){
 }
 
 function sendRSVP(){
-  if(_anulada || !_para || Date.now() > DEADLINE.getTime()) return;
+  if(_anulada || !_para || (DEADLINE && Date.now() > DEADLINE.getTime())) return;
   var submitBtn = _el('rsvpSubmitBtn');
   var btnText   = _el('rsvpBtnText');
   var feedback  = _el('rsvp-feedback');
