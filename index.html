@@ -2284,5 +2284,84 @@ fab.addEventListener('click', function(){
   });
 })();
 </script>
+<script>window.ELY_LIMITE={"url": "https://xv-nathalie.vercel.app", "base": "2026-10-31", "tz": "America/Mexico_City", "viejas": [["31 de octubre de 2026", "{d} de {mes} de {a}"], ["October 31, 2026", "{month} {d}, {a}"], ["31 de octubre", "{d} de {mes}"], ["31 oct 2026", "{d} {mesc} {a}"], ["October 31", "{month} {d}"], ["31 oct", "{d} {mesc}"]]};</script>
+<script>
+/* ELYSIUM FECHA LÍMITE v1 — todos los textos de la fecha límite siguen la fecha
+   del panel Celestial: si la amplían desde el panel, la invitación la muestra sola.
+   Config en window.ELY_LIMITE = { url, base:'YYYY-MM-DD', tz, viejas:[[texto, plantilla], ...] } */
+(function(){
+  var C = window.ELY_LIMITE; if (!C || !window.fetch) return;
+  var ES_M = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var ES_MC = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var ES_D = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var EN_M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var EN_MC = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var EN_D = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  function partes(t){
+    var o = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: C.tz || 'America/Mexico_City', year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' })
+      .formatToParts(new Date(t)).forEach(function(p){ o[p.type] = p.value; });
+    return { d: +o.day, m: +o.month - 1, a: +o.year, w: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(o.weekday) };
+  }
+  function th(n){ var v = n % 100; return n + ((v > 10 && v < 14) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th')); }
+  function fmt(tpl, p){
+    var k = { d: p.d, dd: (p.d < 10 ? '0' : '') + p.d, m1: p.m + 1, mm: (p.m < 9 ? '0' : '') + (p.m + 1), mes: ES_M[p.m], mesc: ES_MC[p.m],
+              a: p.a, dia: ES_D[p.w], month: EN_M[p.m], mon: EN_MC[p.m], weekday: EN_D[p.w], th: th(p.d) };
+    return tpl.replace(/\{(\w+)\}/g, function(_, x){ return k[x] != null ? k[x] : _; });
+  }
+  function esc(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  var reglas = [];
+  function aplicar(txt){
+    if (!txt || txt.length < 4) return txt;
+    for (var i = 0; i < reglas.length; i++){
+      var r = reglas[i];
+      txt = txt.replace(r.re, function(_, pre, hit){
+        var out = r.nuevo;
+        if (hit === hit.toUpperCase() && hit !== hit.toLowerCase()) out = out.toUpperCase();
+        else if (hit.charAt(0) !== hit.charAt(0).toLowerCase()) out = out.charAt(0).toUpperCase() + out.slice(1);
+        return pre + out;
+      });
+    }
+    return txt;
+  }
+  var ATTR = /^(data-|title$|aria-label$|alt$|placeholder$|content$)/;
+  function enElemento(el){
+    for (var i = 0; i < el.attributes.length; i++){
+      var at = el.attributes[i];
+      if (ATTR.test(at.name)){ var x = aplicar(at.value); if (x !== at.value) el.setAttribute(at.name, x); }
+    }
+  }
+  function recorrer(root){
+    if (root.nodeType === 3){ var v = aplicar(root.nodeValue); if (v !== root.nodeValue) root.nodeValue = v; return; }
+    if (root.nodeType !== 1) return;
+    if (/^(SCRIPT|STYLE)$/.test(root.tagName)) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())){ var y = aplicar(n.nodeValue); if (y !== n.nodeValue) n.nodeValue = y; }
+    enElemento(root);
+    var els = root.querySelectorAll('*');
+    for (var j = 0; j < els.length; j++) enElemento(els[j]);
+  }
+  fetch('https://panel-invitados-qr.vercel.app/api/confirmar?solo_boda=1&url_boda=' + encodeURIComponent(C.url))
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var iso = j && j.boda && j.boda.fecha_limite_rsvp; if (!iso) return;
+      var p = partes(iso), b = C.base ? C.base.split('-') : null;
+      if (b && +b[0] === p.a && +b[1] === p.m + 1 && +b[2] === p.d) return;   // misma fecha: nada que cambiar
+      (C.viejas || []).forEach(function(v){
+        reglas.push({ re: new RegExp('(^|[^0-9A-Za-zÀ-ÿ])(' + esc(v[0]) + ')(?![0-9])', 'gi'), nuevo: fmt(v[1], p) });
+      });
+      recorrer(document.head); recorrer(document.body);
+      /* Textos que se pintan después (cambio de idioma, RSVP, etc.) */
+      new MutationObserver(function(ms){
+        ms.forEach(function(m){
+          if (m.type === 'characterData') recorrer(m.target);
+          else if (m.type === 'attributes') enElemento(m.target);
+          else m.addedNodes.forEach(recorrer);
+        });
+      }).observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['data-en', 'data-es', 'data-en-html', 'title', 'aria-label', 'placeholder'] });
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>
